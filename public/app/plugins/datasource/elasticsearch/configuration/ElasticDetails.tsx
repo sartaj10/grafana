@@ -1,6 +1,6 @@
 import React from 'react';
 import { EventsWithValidation, regexValidation, LegacyForms } from '@grafana/ui';
-const { Select, Input, FormField } = LegacyForms;
+const { Select, Input, FormField, Switch } = LegacyForms;
 import { ElasticsearchOptions } from '../types';
 import { DataSourceSettings, SelectableValue } from '@grafana/data';
 
@@ -144,6 +144,17 @@ export const ElasticDetails = (props: Props) => {
             />
           </div>
         </div>
+        {value.jsonData.esVersion >= 70 && (
+          <div className="gf-form-group">
+            <div className="gf-form-inline">
+              <Switch
+                label="Include Frozen Indices"
+                checked={value.jsonData.includeFrozen ?? false}
+                onChange={booleanChangeHandler('includeFrozen', value, onChange)}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
@@ -157,6 +168,18 @@ const changeHandler = (
   onChange({
     ...value,
     [key]: event.currentTarget.value,
+  });
+};
+
+const booleanChangeHandler = (key: keyof ElasticsearchOptions, value: Props['value'], onChange: Props['onChange']) => (
+  event: React.SyntheticEvent<HTMLInputElement>
+) => {
+  onChange({
+    ...value,
+    jsonData: {
+      ...value.jsonData,
+      [key]: !value.jsonData[key],
+    },
   });
 };
 
