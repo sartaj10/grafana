@@ -380,6 +380,7 @@ describe('ElasticDatasource', function(this: any) {
                   _all: {},
                   properties: {
                     '@timestamp': { type: 'date' },
+                    '@timestampnano': { type: 'date_nanos' },
                     beat: {
                       properties: {
                         name: {
@@ -426,6 +427,7 @@ describe('ElasticDatasource', function(this: any) {
       const fields = _.map(fieldObjects, 'text');
       expect(fields).toEqual([
         '@timestamp',
+        '@timestampnano',
         'beat.name.raw',
         'beat.name',
         'beat.hostname',
@@ -455,7 +457,7 @@ describe('ElasticDatasource', function(this: any) {
       });
 
       const fields = _.map(fieldObjects, 'text');
-      expect(fields).toEqual(['@timestamp']);
+      expect(fields).toEqual(['@timestamp', '@timestampnano']);
     });
   });
 
